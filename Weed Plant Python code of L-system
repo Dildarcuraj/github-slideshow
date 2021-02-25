@@ -1,0 +1,79 @@
+import turtle as t
+#from random import randint
+def main():
+    #t.pensize(1)
+    t.penup()
+    t.left(90)
+    t.goto(-100,-200)
+    t.pendown()
+    iter = 4   
+    initial_string = 'XY'
+    replace_string = 'FX'
+    rule_1 = 'X[-FFF][+FFF]FX '
+    rule_2 = 'YFX[+Y][-Y]'
+    
+    
+    final_string = generate_final_string(initial_string, replace_string, iter, rule_1, rule_2)
+    draw_path(final_string)
+    t.hideturtle()
+    t.exitonclick()
+    
+def draw_path(path, length = 3, draw_speed = 0, angle=22):
+    t.speed(draw_speed)
+    stack=[]
+    dirstack = []
+    
+    for symbol in path:
+        if symbol == 'X':
+            t.forward(length)
+            continue
+        if symbol == 'F':
+            t.forward(length)
+            continue
+        if symbol == 'Y':
+            t.forward(length)
+            continue
+            
+        if symbol == '+':
+            t.left(angle)
+            continue
+        
+        if symbol == '-':
+            t.right(angle)
+            continue
+       
+        if symbol== "[":
+            stack.append(t.pos())
+            dirstack.append(t.heading())
+            #t.pencolor('#%02x%02x%02x' % (randint(0,200),randint(0,200),randint(0,200)))
+        if symbol== "]":
+            t.penup()
+            post =  stack.pop()
+            direc = dirstack.pop()
+            t.setpos(post)
+            t.setheading(direc)
+            t.pendown()
+            #t.pencolor('#%02x%02x%02x' % (randint(0,200),randint(0,200),randint(0,200)))
+            
+
+def generate_rule(string, replace_string, rule):
+    
+    return string.replace(replace_string, rule)    
+
+def generate_final_string(initial_string, replace_string, iter, rule_1, rule_2):
+    current_string = initial_string
+    
+    
+    for i in range (1,iter+1):
+        
+        #if(i % 2 != 0):
+        current_string = generate_rule(current_string, replace_string[0], rule_1)
+        current_string = generate_rule(current_string, replace_string[1], rule_2)
+       # else:
+        #current_string = generate_rule(current_string, replace_string, rule_2)
+        
+    return current_string
+
+
+if __name__ == "__main__":
+    main()
